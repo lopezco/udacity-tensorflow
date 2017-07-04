@@ -1,8 +1,9 @@
 version: '2'
 services:
-  tensorflow-udacity:
+  udacity-tensorflow:
     build: .
     image: gcr.io/tensorflow/udacity-assignments:1.0.0
+    container_name: udacity-tensorflow
     ports:
       - "8899:8899"
     volumes:
