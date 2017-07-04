@@ -1,0 +1,13 @@
+version: '2'
+services:
+  tensorflow-udacity:
+    build: .
+    image: gcr.io/tensorflow/udacity-assignments:1.0.0
+    ports:
+      - "8899:8899"
+    volumes:
+     - ./notebooks:/notebooks
+    environment:
+      PASSWORD: "sha1:90ada2957e9b:14ecb1cc4d3614a2f6f20a2d1873667645a56bb3"
+      PORT: 8899
+
