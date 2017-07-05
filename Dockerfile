@@ -10,4 +10,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install scikit-learn pyreadline Pillow
 WORKDIR /notebooks
-CMD ["/run_jupyter.sh", "--allow-root"]
+
+COPY entrypoint.sh /
+RUN chmod +x /*.sh
+
+EXPOSE 6006  # tensorboard
+
+ENTRYPOINT ["/entrypoint.sh"]
+
