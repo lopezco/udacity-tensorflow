@@ -13,7 +13,5 @@ WORKDIR /notebooks
 COPY entrypoint.sh /
 RUN chmod +x /*.sh
 
-EXPOSE 6006  # tensorboard
-
 ENTRYPOINT ["/entrypoint.sh"]
 
