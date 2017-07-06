@@ -1,107 +1,70 @@
-Assignments for Udacity Deep Learning class with TensorFlow
-===========================================================
+# Assignments for Udacity Deep Learning class with TensorFlow
 
 Course information can be found at https://www.udacity.com/course/deep-learning--ud730
 
-Running the Docker container from the Google Cloud repository
--------------------------------------------------------------
+## Running the Docker container from the Dockerhub image
 
-    docker run -p 8888:8888 --name tensorflow-udacity -it gcr.io/tensorflow/udacity-assignments:1.0.0
+```bash
+docker run -p 8888:8888 -p 6006:6006 --name udacity-tensorflow -it lopezco/udacity-tensorflow
+```
 
 Note that if you ever exit the container, you can return to it using:
 
-    docker start -ai tensorflow-udacity
+```bash
+docker start -ai udacity-tensorflow
+```
 
-Accessing the Notebooks
------------------------
+### Environment Variables
 
-On linux, go to: http://127.0.0.1:8888
+You can set some environment variables while running the container using the ```--env``` parameter as follows:
 
-On mac, find the virtual machine's IP using:
+```
+--env JUPYTER_PASSWORD="my_password" --env JUPYTER_PORT=8888 --env TENSORBOARD_LOGDIR="./logs" --env TENSORBOARD_PORT=6006
+```
 
-    docker-machine ip default
+### Accessing the Notebooks
 
-Then go to: http://IP:8888 (likely http://192.168.99.100:8888)
-
-FAQ
----
-
-* **I'm getting a MemoryError when loading data in the first notebook.**
-
-If you're using a Mac, Docker works by running a VM locally (which
-is controlled by `docker-machine`). It's quite likely that you'll
-need to bump up the amount of RAM allocated to the VM beyond the
-default (which is 1G).
-[This Stack Overflow question](http://stackoverflow.com/questions/32834082/how-to-increase-docker-machine-memory-mac)
-has two good suggestions; we recommend using 8G.
-
-In addition, you may need to pass `--memory=8g` as an extra argument to
-`docker run`.
-
-* **I want to create a new virtual machine instead of the default one.**
-
-`docker-machine` is a tool to provision and manage docker hosts, it supports multiple platform (ex. aws, gce, azure, virtualbox, ...). To create a new virtual machine locally with built-in docker engine, you can use
-
-    docker-machine create -d virtualbox --virtualbox-memory 8196 tensorflow
-    
-`-d` means the driver for the cloud platform, supported drivers listed [here](https://docs.docker.com/machine/drivers/). Here we use virtualbox to create a new virtual machine locally. `tensorflow` means the name of the virtual machine, feel free to use whatever you like. You can use
-
-    docker-machine ip tensorflow
-    
-to get the ip of the new virtual machine. To switch from default virtual machine to a new one (here we use tensorflow), type
-
-    eval $(docker-machine env tensorflow)
-    
-Note that `docker-machine env tensorflow` outputs some environment variables such like `DOCKER_HOST`. Then your docker client is now connected to the docker host in virtual machine `tensorflow`
-
-* **I'm getting a TLS connection error.**
-
-If you get an error about the TLS connection of your docker, run the command below to confirm the problem.
-
-	docker-machine ip tensorflow
-
-Then if it is the case use the instructions on [this page](https://docs.docker.com/toolbox/faqs/troubleshoot/) to solve the issue.
+* Jupyter: http://localhost:8888
+* Tensorboard: http://localhost:6006
 
 
-* **I'm getting the error - docker: Cannot connect to the Docker daemon. Is the docker daemon running on this host? - when I run 'docker run'.**
+## Running the Docker container with docker-compose
 
-This is a permissions issue, and a popular answer is provided for Linux and Max OSX [here](http://stackoverflow.com/questions/21871479/docker-cant-connect-to-docker-daemon) on StackOverflow.
+Install docker-compose following [this](https://docs.docker.com/compose/install/) guide.
+Then, download [this](https://github.com/lopezco/udacity-tensorflow/blob/master/docker-compose.yml) docker-compose file.
 
-Notes for anyone needing to build their own containers (mostly instructors)
-===========================================================================
+```bash
+docker-compose up [-d]
+```
 
-Building a local Docker container
----------------------------------
+This command will pull the image from docker-hub and automatically run the container. The parameter ```-d``` is optional (run in detached mode)
 
-    cd tensorflow/examples/udacity
-    docker build --pull -t $USER/assignments .
+Note that if you ever stop the container, you can restart it using:
 
-Running the local container
----------------------------
+```bash
+docker-compose up [-d]
+```
 
-To run a disposable container:
+### Environment Variables
+You can set some environment variables in the docker-compose file to control the container:
 
-    docker run -p 8888:8888 -it --rm $USER/assignments
+```
+environment:
+  JUPYTER_PASSWORD: "my_password"
+  JUPYTER_PORT: 8899
+  TENSORBOARD_LOGDIR: ./logs
+  TENSORBOARD_PORT: 8008
+```
 
-Note the above command will create an ephemeral container and all data stored in the container will be lost when the container stops.
+### Accessing the Notebooks
 
-To avoid losing work between sessions in the container, it is recommended that you mount the `tensorflow/examples/udacity` directory into the container:
+* Jupyter: http://localhost:8899
+* Tensorboard: http://localhost:8008
 
-    docker run -p 8888:8888 -v </path/to/tensorflow/examples/udacity>:/notebooks -it --rm $USER/assignments
 
-This will allow you to save work and have access to generated files on the host filesystem.
+## History of base image
 
-Pushing a Google Cloud release
-------------------------------
-
-    V=1.0.0
-    docker tag $USER/assignments gcr.io/tensorflow/udacity-assignments:$V
-    gcloud docker push gcr.io/tensorflow/udacity-assignments
-    docker tag $USER/assignments gcr.io/tensorflow/udacity-assignments:latest
-    gcloud docker push gcr.io/tensorflow/udacity-assignments
-
-History
--------
+**Base image:** gcr.io/tensorflow/tensorflow:latest
 
 * 0.1.0: Initial release.
 * 0.2.0: Many fixes, including lower memory footprint and support for Python 3.
