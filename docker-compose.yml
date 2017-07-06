@@ -6,10 +6,12 @@ services:
     container_name: udacity-tensorflow
     ports:
       - "8899:8899"
-      - "8008:6006"
+      - "8008:8008"
     volumes:
      - ./notebooks:/notebooks
     environment:
-      PASSWORD: "90ada2957e9b:14ecb1cc4d3614a2f6f20a2d1873667645a56bb3"
-      PORT: 8899
+      JUPYTER_PASSWORD: "90ada2957e9b:14ecb1cc4d3614a2f6f20a2d1873667645a56bb3"
+      JUPYTER_PORT: 8899
+      TENSORBOARD_LOGDIR: ./logs
+      TENSORBOARD_PORT: 8008
 
