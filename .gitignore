@@ -3,3 +3,4 @@ notMNIST_small*
 notMNIST.pickle
 .ipynb_checkpoints
 *.zip
+notebooks/logs
