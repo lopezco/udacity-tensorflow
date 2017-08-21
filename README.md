@@ -73,3 +73,4 @@ environment:
 * 0.5.0: Actually use 0.7.1 release.
 * 0.6.0: Update to TF 0.10.0, add libjpeg (for Pillow).
 * 1.0.0: Update to TF 1.0.0 release.
+* 1.1.0: Update to TF 1.3.0 release.
